@@ -98,9 +98,6 @@ fetch('data/puntos.geojson')
 
 
     map.fitBounds(cluster.getBounds());
-
-
-})
           
     var legend = L.control({
     position: 'bottomright'
