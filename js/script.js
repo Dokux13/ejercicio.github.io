@@ -2,7 +2,7 @@ console.log("Script actualizado");
 
 // Crear mapa
 var map = L.map('map', {
-    center: [-45.0322054,-71.2863496],
+    center: [-44.3682743,-74.4359215],
     zoom: 13,
     zoomControl: false
 });
@@ -57,39 +57,24 @@ fetch('data/puntos.geojson')
 .then(response => response.json())
 .then(data => {
 
-
     const puntosLayer = L.geoJSON(data, {
 
         pointToLayer: function(feature, latlng) {
 
-
+            // Obtener biomasa
             let biomasa = Number(feature.properties.Total_biom) || 100;
 
+            // Escalar tamaño del punto
             let radio = Math.sqrt(biomasa) / 10;
 
 
-            return L.marker(latlng, {
+            return L.circleMarker(latlng, {
 
-                icon: L.divIcon({
-
-                    className: '',
-
-                    html: `
-                        <div style="
-                            width:${radio * 2}px;
-                            height:${radio * 2}px;
-                            background:#F05100;
-                            border:2px solid #e1e0ec;
-                            border-radius:50%;">
-                        </div>
-                    `,
-
-                    iconSize: [
-                        radio * 2,
-                        radio * 2
-                    ]
-
-                })
+                radius: radio,
+                color: '#e1e0ec',
+                weight: 2,
+                fillColor: '#F05100',
+                fillOpacity: 1
 
             });
 
@@ -97,7 +82,6 @@ fetch('data/puntos.geojson')
 
 
         onEachFeature: function(feature, layer) {
-
 
             let contenido = `
                 <table class="popup-table">
@@ -128,62 +112,12 @@ fetch('data/puntos.geojson')
     });
 
 
-    // Leyenda
-    var legend = L.control({
-        position: 'bottomright'
-    });
+    // Agregar puntos al mapa
+    puntosLayer.addTo(map);
 
 
-    legend.onAdd = function(map) {
-
-
-        var div = L.DomUtil.create('div', 'info legend');
-
-
-        div.innerHTML += '<h4>Biomasa</h4>';
-
-
-        var valores = [
-            {valor: 100, texto: '100 ton'},
-            {valor: 500, texto: '500 ton'},
-            {valor: 1000, texto: '1000 ton'}
-        ];
-
-
-        valores.forEach(function(item) {
-
-
-            var radio = Math.sqrt(item.valor) / 5;
-
-
-            div.innerHTML +=
-            '<div class="legend-item">' +
-
-                '<span style="' +
-                'display:inline-block;' +
-                'width:' + radio * 2 + 'px;' +
-                'height:' + radio * 2 + 'px;' +
-                'background:#F05100;' +
-                'border:2px solid #e1e0ec;' +
-                'border-radius:50%;' +
-                'margin-right:10px;' +
-                'vertical-align:middle;">' +
-
-                '</span>' +
-
-                item.texto +
-
-            '</div>';
-
-        });
-
-
-        return div;
-
-    };
-
-
-    legend.addTo(map);
+    // Ajustar vista
+    map.fitBounds(puntosLayer.getBounds());
 
 
 })
@@ -195,5 +129,3 @@ fetch('data/puntos.geojson')
     );
 
 });
-
-
