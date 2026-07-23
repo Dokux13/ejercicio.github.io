@@ -127,7 +127,7 @@ legend.onAdd = function(map) {
 
     valores.forEach(function(item) {
 
-        var radio = Math.sqrt(item.valor) / 15;
+        var radio = Math.sqrt(item.valor) / 5;
 
 
         div.innerHTML +=
