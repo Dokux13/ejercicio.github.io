@@ -59,27 +59,24 @@ fetch('data/puntos.geojson')
 
     const puntosLayer = L.geoJSON(data, {
 
-        pointToLayer: function(feature, latlng) {
+       pointToLayer: function(feature, latlng) {
 
-            // Obtener biomasa
-            let biomasa = Number(feature.properties.Total_biom) || 100;
+    let biomasa = Number(feature.properties.Total_biom) || 100;
 
-            // Escalar tamaño del punto
-            let radio = Math.sqrt(biomasa) / 10;
+    let radio = Math.sqrt(biomasa) / 10;
 
 
-            return L.circleMarker(latlng, {
+    return L.circleMarker(latlng, {
 
-                radius: radio,
-                color: '#e1e0ec',
-                weight: 2,
-                fillColor: '#F05100',
-                fillOpacity: 1
+        radius: radio,
+        color: '#e1e0ec',
+        weight: 2,
+        fillColor: '#F05100',
+        fillOpacity: 1
 
-            });
+    });
 
-        },
-
+},
 
         onEachFeature: function(feature, layer) {
 
