@@ -63,7 +63,7 @@ fetch('data/puntos.geojson')
 
     let biomasa = Number(feature.properties.Total_biom) || 100;
 
-    let radio = Math.sqrt(biomasa) / 15;
+    let radio = Math.sqrt(biomasa) / 5;
 
 
     return L.circleMarker(latlng, {
